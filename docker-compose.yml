@@ -1,11 +1,10 @@
-
 services:
   web:
     build:
       context: .
       dockerfile: Dockerfile
     container_name: django_web-${APP_ENV}
-    #command: python manage.py runserver 0.0.0.0:8000
+    entrypoint: ["/app/config/entrypoint.sh"]
     volumes:
       - .:/app
     ports:
@@ -14,7 +13,7 @@ services:
       - .env
     depends_on:
       - db
-
+    restart: unless-stopped
 
   db:
     image: mysql:8.0.32
@@ -29,6 +28,19 @@ services:
       - mysql_data:/var/lib/mysql
     ports:
       - "3309:3306"
+  
+  nginx:
+    image: nginx:latest
+    container_name: nginx_loyer
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./staticfiles:/app/staticfiles
+      - ./media:/app/media
+    depends_on:
+      - web
+    restart: unless-stopped
 
 volumes:
   mysql_data:
