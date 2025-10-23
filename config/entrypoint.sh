@@ -11,6 +11,6 @@ done
 echo "Application des migrations..."
 python manage.py migrate --noinput
 
-#je lance le serveur
-echo "Lancer le serveur"
-python manage.py runserver 0.0.0.0:8000
+# Lancer le serveur Daphne
+echo "Démarrage du serveur Daphne..."
+daphne -b 0.0.0.0 -p 8000 loyer.asgi:application
