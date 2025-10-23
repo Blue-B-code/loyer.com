@@ -4,7 +4,6 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: django_web-${APP_ENV}
-    entrypoint: ["/app/config/entrypoint.sh"]
     volumes:
       - .:/app
     ports:
